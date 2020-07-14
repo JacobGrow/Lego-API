@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using CS_Lego.Models;
+using Dapper;
 
 namespace CS_Lego.Repositories
 {
@@ -15,27 +16,43 @@ namespace CS_Lego.Repositories
 
     internal IEnumerable<Brick> Get()
     {
-      throw new NotImplementedException();
+      string sql = "SELECT * FROM bricks";
+      return _db.Query<Brick>(sql);
     }
 
-    internal Brick GetById(int id)
+    internal Brick GetById(int Id)
     {
-      throw new NotImplementedException();
+       string sql = "SELECT * FROM bricks WHERE id = @Id";
+       return _db.QueryFirstOrDefault<Brick>(sql, new { Id });
     }
 
     internal int Create(Brick newBrick)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      INSERT INTO bricks
+      (name, description)
+      VALUES
+      (@Name, @Description);
+      SELECT LAST_INSERT_ID();";
+      return _db.ExecuteScalar<int>(sql, newBrick);
     }
 
-    internal object Edit(Brick original)
+    internal Brick Edit(Brick original)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      UPDATE bricks
+      SET
+        name = @Name,
+        description = @Description
+        WHERE id = @Id;
+        SELECT * FROM bricks WHERE id = @Id;";
+        return _db.QueryFirstOrDefault<Brick>(sql, original);
     }
 
-    internal void Delete(int id)
+    internal void Delete(int Id)
     {
-      throw new NotImplementedException();
+      string sql = "DELETE FROM bricks WHERE id = @Id";
+      _db.Execute(sql, new {Id});
     }
   }
 }
