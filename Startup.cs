@@ -35,6 +35,8 @@ namespace CS_Lego
       services.AddScoped<IDbConnection>(x => CreateDBContext());
       services.AddTransient<KitService>();
       services.AddTransient<KitRepository>();
+      services.AddTransient<BrickRepository>();
+      services.AddTransient<BrickService>();
     }
 
     private IDbConnection CreateDBContext()
