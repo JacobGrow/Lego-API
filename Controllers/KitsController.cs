@@ -5,23 +5,17 @@ using CS_Lego.Models;
 using CS_Lego.Services;
 
 
-
-
 namespace CS_Lego.Controllers
 {
-    public class LegoKitsController
-    {
-        [ApiController]
         [Route("api/[controller]")]
-    
-        public class KitsController : ControllerBase
+        [ApiController]
+    public class KitsController : ControllerBase
+    {
+    private readonly KitService _service;
+    public KitsController(KitService service)
         {
-            private readonly KitService _service;
-            
-            public KitsController(KitService service)
-            {
-                _service = service;
-            }
+            _service = service;
+        }
 
             //Get
             [HttpGet]
@@ -92,4 +86,3 @@ namespace CS_Lego.Controllers
             }
         }
     }
-}

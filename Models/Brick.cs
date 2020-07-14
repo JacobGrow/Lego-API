@@ -1,18 +1,18 @@
-// using System;
-// using System.ComponentModel.DataAnnotations;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 
-// namespace CS_Lego.Models
-// {
-//     public class Brick
-//     {
-//         public int Id { get; set;}
-//         [Required]
-//         public string Name {get; set;}
+namespace CS_Lego.Models
+{
+    public class Brick
+    {
+        public int Id { get; set;}
+        [Required]
+        public string Name {get; set;}
 
-//         public string Description {get; set;}
+        public string Description {get; set;}
 
-//         public string Color {get; set;}
+        public string Color {get; set;}
 
-//     }
-// }
+    }
+}
