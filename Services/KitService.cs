@@ -33,7 +33,7 @@ namespace CS_Lego.Services
       return newKit;
     }
 
-    internal object Edit(Kit editKit)
+    internal Kit Edit(Kit editKit)
     {
      Kit original = Get(editKit.Id);
      original.Name = editKit.Name.Length > 0 ? editKit.Name : original.Name;
@@ -42,7 +42,7 @@ namespace CS_Lego.Services
      return _repo.Edit(original);
     }
 
-    internal object Delete(int id)
+    internal Kit Delete(int id)
     {
       Kit exists = Get(id);
       _repo.Delete(id);
