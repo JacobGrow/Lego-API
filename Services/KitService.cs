@@ -42,11 +42,14 @@ namespace CS_Lego.Services
      return _repo.Edit(original);
     }
 
-    internal Kit Delete(int id)
+    internal Kit Delete(int id, string userEmail)
     {
-      Kit exists = Get(id);
-      _repo.Delete(id);
-      return exists;
+    Kit toDelete = Get(id);
+    if(toDelete.Creator != userEmail || !_repo.Delete(id))
+    {
+      throw new UnauthorizedAccessException("Invalid Access");
+    }
+      return toDelete;
     }
   }
 }

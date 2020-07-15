@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using CS_Lego.Models;
 using CS_Lego.Services;
-
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace CS_Lego.Controllers
 {
@@ -33,7 +35,7 @@ namespace CS_Lego.Controllers
 
             //GetById
             [HttpGet("{kitId}")]
-            public ActionResult<Kit> GetAction(int kitId)
+            public ActionResult<Kit> Get(int kitId)
             {
                 try
                 {
@@ -46,23 +48,28 @@ namespace CS_Lego.Controllers
             }
             //Post
             [HttpPost]
-            public ActionResult<Kit> Post([FromBody] Kit newKit)
+            [Authorize] 
+            public ActionResult<Kit> Post([FromBody] Kit newData)
             {
                 try
-                {
-                    return Ok(_service.Create(newKit));
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e.Message);
-                }
+            {
+                string UserEmail = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value; // req.userInfo.email
+                newData.Creator = UserEmail;
+                return Ok(_service.Create(newData));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
             }
 
             [HttpPut("{id}")]
+            [Authorize]
             public ActionResult<Kit> Edit([FromBody] Kit newKit, int id)
             {
                 try
                 {
+                    string UserEmail = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value; // req.userInfo.email
                     newKit.Id = id;
                     return Ok(_service.Edit(newKit));
                 }
@@ -73,11 +80,13 @@ namespace CS_Lego.Controllers
             }
 
             [HttpDelete("{id}")]
+            [Authorize]
             public ActionResult<Kit> Delete(int id)
             {
                 try
                 {
-                    return Ok(_service.Delete(id));
+                    string UserEmail = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value; // req.userInfo.email
+                    return Ok(_service.Delete(id, UserEmail));
                 }
                 catch (Exception e)
                 {

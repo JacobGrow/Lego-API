@@ -51,10 +51,11 @@ namespace CS_Lego.Repositories
     return _db.QueryFirstOrDefault<Kit>(sql, original);
     }
 
-    internal void Delete(int id)
+    internal bool Delete(int id)
     {
-      string sql = "DELETE FROM kits WHERE id = @id";
-      _db.Execute(sql, new { id });
+      string sql = "DELETE FROM kits WHERE id = @id LIMIT 1;";
+      int affected = _db.Execute(sql, new { id });
+      return affected == 1;
     }
   }
 }
